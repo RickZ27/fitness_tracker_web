@@ -22,6 +22,7 @@ export default function RegisterPage() {
 
   const onSubmit = (data: RegisterFormData) => {
     window.location.href="/home";
+    // this of for 3 rd commit
 
   };
 
