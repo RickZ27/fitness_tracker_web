@@ -51,37 +51,22 @@ export default function RegisterForm() {
             {error && (
                 <p className="text-sm text-red-600">{error}</p>
             )}
-            <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                    <label className="text-sm font-medium" htmlFor="firstName">First name</label>
+                    <label className="text-sm font-medium" htmlFor="fullName">Full Name</label>
                     <input
-                        id="firstName"
+                        id="fullName"
                         type="text"
                         autoComplete="given-name"
                         className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                        {...register("firstName")}
-                        placeholder="Jane"
+                        {...register("fullName")}
+                        placeholder="Jane Doe"
                     />
-                    {errors.firstName?.message && (
-                        <p className="text-xs text-red-600">{errors.firstName.message}</p>
+                    {errors.fullName?.message && (
+                        <p className="text-xs text-red-600">{errors.fullName.message}</p>
                     )}
                 </div>
 
-                <div className="space-y-1">
-                    <label className="text-sm font-medium" htmlFor="lastName">Last name</label>
-                    <input
-                        id="lastName"
-                        type="text"
-                        autoComplete="family-name"
-                        className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                        {...register("lastName")}
-                        placeholder="Doe"
-                    />
-                    {errors.lastName?.message && (
-                        <p className="text-xs text-red-600">{errors.lastName.message}</p>
-                    )}
-                </div>
-            </div>
+               
 
             <div className="space-y-1">
                 <label className="text-sm font-medium" htmlFor="email">Email</label>

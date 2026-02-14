@@ -82,6 +82,8 @@ export default function LoginForm() {
                 )}
             </div>
 
+            <Link href={"/forgot-password"}>Forgot Password</Link>
+
             <button
                 type="submit"
                 disabled={isSubmitting || pending}
