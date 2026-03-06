@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { RegisterData, registerSchema } from "../schema";
@@ -20,30 +19,22 @@ export default function RegisterForm() {
         mode: "onSubmit",
     });
 
-    const [pending, setTransition] = useTransition()
+    const [pending, setTransition] = useTransition();
     const [error, setError] = useState<string | null>(null);
 
     const submit = async (values: RegisterData) => {
         setError(null);
         setTransition(async () => {
             try {
-
                 const response = await handleRegister(values);
                 if (!response.success) {
                     throw new Error(response.message);
                 }
-                if (response.success) {
-                    router.push("/login");
-                } else {
-                    setError('Registration failed');
-                }
-
+                router.push("/login");
             } catch (err: Error | any) {
                 setError(err.message || 'Registration failed');
             }
         });
-        // GO TO LOGIN PAGE
-        console.log("register", values);
     };
 
     return (
@@ -51,10 +42,13 @@ export default function RegisterForm() {
             {error && (
                 <p className="text-sm text-red-600">{error}</p>
             )}
+
+            {/* firstName + lastName side by side */}
+            <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                    <label className="text-sm font-medium" htmlFor="fullName">Full Name</label>
+                    <label className="text-sm font-medium" htmlFor="firstName">First Name</label>
                     <input
-                        id="fullName"
+                        id="firstName"
                         type="text"
                         autoComplete="given-name"
                         className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
@@ -66,7 +60,7 @@ export default function RegisterForm() {
                     )}
                 </div>
 
-               
+            </div>
 
             <div className="space-y-1">
                 <label className="text-sm font-medium" htmlFor="email">Email</label>
@@ -91,12 +85,13 @@ export default function RegisterForm() {
                     autoComplete="username"
                     className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
                     {...register("username")}
-                    placeholder="Jane Doe"
+                    placeholder="janedoe"
                 />
                 {errors.username?.message && (
                     <p className="text-xs text-red-600">{errors.username.message}</p>
                 )}
             </div>
+
             <div className="space-y-1">
                 <label className="text-sm font-medium" htmlFor="password">Password</label>
                 <input
@@ -113,7 +108,7 @@ export default function RegisterForm() {
             </div>
 
             <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="confirmPassword">Confirm password</label>
+                <label className="text-sm font-medium" htmlFor="confirmPassword">Confirm Password</label>
                 <input
                     id="confirmPassword"
                     type="password"
@@ -136,7 +131,8 @@ export default function RegisterForm() {
             </button>
 
             <div className="mt-1 text-center text-sm">
-                Already have an account? <Link href="/login" className="font-semibold hover:underline">Log in</Link>
+                Already have an account?{" "}
+                <Link href="/login" className="font-semibold hover:underline">Log in</Link>
             </div>
         </form>
     );

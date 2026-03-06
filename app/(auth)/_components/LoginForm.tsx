@@ -82,8 +82,6 @@ export default function LoginForm() {
                 )}
             </div>
 
-            <Link href={"/forgot-password"}>Forgot Password</Link>
-
             <button
                 type="submit"
                 disabled={isSubmitting || pending}
@@ -93,7 +91,10 @@ export default function LoginForm() {
             </button>
 
             <div className="mt-1 text-center text-sm">
-                Don't have an account? <Link href="/register" className="font-semibold hover:underline">Sign up</Link>
+                Dont have an account? <Link href="/register" className="font-semibold hover:underline">Sign up</Link>
+            </div>
+            <div className="mt-1 text-center text-sm">
+                <Link href="/forget-password" className="font-semibold hover:underline">Forgot Password?</Link>
             </div>
         </form>
     );

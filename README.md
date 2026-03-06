@@ -38,3 +38,4 @@ npm install react-hook-form zod @hookform/resolvers
 app/(public)/page.tsx
 
 if no page in app folder, it can also be set inside (public) folder treated as "/"root 
+# umang-backend
