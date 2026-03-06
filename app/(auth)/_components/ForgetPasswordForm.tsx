@@ -1,42 +1,37 @@
 "use client";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { forgetPasswordSchema, ForgetPasswordData } from "../schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { handleRequestPasswordReset } from "@/lib/actions/auth-action";
 import { useRouter } from "next/navigation";
-import { ForgotData, forgotSchema, } from "../schema";
-import { forgotPassword } from "@/lib/api/auth";
 import { toast } from "react-toastify";
 
-export default function ForgotPassword() {
+const ForgetPasswordForm = () => {
     const router = useRouter();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<ForgotData>({
-        resolver: zodResolver(forgotSchema),
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ForgetPasswordData>({
         mode: "onSubmit",
+        resolver: zodResolver(forgetPasswordSchema),
     });
-    const [pending, setTransition] = useTransition()
     const [error, setError] = useState<string | null>(null);
-
-    const submit = async (values: ForgotData) => {
+    const [pending, setTransition] = useTransition();
+    const submit = (values: ForgetPasswordData) => {
         setError(null);
         setTransition(async () => {
             try {
-                const response= await forgotPassword(values.email);
-                if(response.success && response.data.token) {
-                    toast.success("Reset email sent successfully! Please check your inbox.");
-                    router.push(`/reset-password?token=${response.data.token}`);
-                } else {
-                    toast.error("Failed to send reset email");
+                const result = await handleRequestPasswordReset(values.email);
+                if (result.success) {
+                    toast.success("If the email is registered, a reset link has been sent.");
+                    return router.push('/login');
+                }else{
+                    throw new Error(result.message || 'Failed to send reset link');
                 }
             } catch (err: Error | any) {
-                setError(err.message || 'Failed to send reset email');
+                toast.error(err.message || 'Failed to send reset link');
             }
         })
-    };
+    }
 
     return (
         <form onSubmit={handleSubmit(submit)} className="space-y-4">
@@ -44,7 +39,7 @@ export default function ForgotPassword() {
                 <p className="text-sm text-red-600">{error}</p>
             )}
             <div className="space-y-1">
-               <label className="text-sm font-medium" htmlFor="email">Email</label>
+                <label className="text-sm font-medium" htmlFor="email">Email</label>
                 <input
                     id="email"
                     type="email"
@@ -56,15 +51,21 @@ export default function ForgotPassword() {
                 {errors.email?.message && (
                     <p className="text-xs text-red-600">{errors.email.message}</p>
                 )}
-        
             </div>
+
             <button
                 type="submit"
                 disabled={isSubmitting || pending}
                 className="h-10 w-full rounded-md bg-foreground text-background text-sm font-semibold hover:opacity-90 disabled:opacity-60"
             >
-               Send email
+                {isSubmitting || pending ? "Sending..." : "Send Link"}
             </button>
+
+            <div className="mt-1 text-center text-sm">
+                Already have an account? <Link href="/login" className="font-semibold hover:underline">Log in</Link>
+            </div>
         </form>
     );
 }
+
+export default ForgetPasswordForm;

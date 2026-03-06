@@ -9,8 +9,9 @@ interface UserData {
     role: string;
     createdAt: string;
     updatedAt: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
+
 export const setAuthToken = async (token: string) => {
     const cookieStore = await cookies();
     cookieStore.set({
@@ -18,6 +19,7 @@ export const setAuthToken = async (token: string) => {
         value: token,
     })
 }
+
 export const getAuthToken = async () => {
     const cookieStore = await cookies();
     return cookieStore.get('auth_token')?.value || null;
