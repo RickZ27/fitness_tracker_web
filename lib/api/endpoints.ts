@@ -65,5 +65,9 @@ export const API = {
             UPDATE: (id: string) => `/api/admin/exercises/${id}`,
             DELETE: (id: string) => `/api/admin/exercises/${id}`,
         },
+
+        ANALYTICS: {
+        GET: '/api/admin/analytics',
+    },
     },
 };
