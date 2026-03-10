@@ -10,6 +10,8 @@ const NAV_LINKS = [
     { href: '/user/workout',   label: 'Workouts' },
     { href: '/user/analytics', label: 'Analytics' },
     { href: '/user/profile',   label: 'Profile' },
+    { href: "/user/timer", label: "Timer" }
+
 ];
 
 export default function Header() {
